@@ -48,7 +48,7 @@ bool SaveBMP(const Path& file, const Image& image) {
     const uint32_t img_size = padding * h;
 
     BitmapFileHeader file_header;
-    file_header.reserved_1 = img_size + 54;
+    file_header.reserved_1 = img_size + file_header.offset_data;
     out.write((const char*)&file_header, sizeof(BitmapFileHeader));
     
     BitmapInfoHeader info_header;
