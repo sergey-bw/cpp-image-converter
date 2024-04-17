@@ -76,13 +76,15 @@ Image LoadBMP(const Path& file) {
     ifstream ifs(file, ios::binary);
 
     BitmapFileHeader file_header;
-    ifs.read((char*)&file_header, sizeof(BitmapFileHeader));
-    if (file_header.signature != BMP_SIG) {
+    if (!ifs.read((char*)&file_header, sizeof(BitmapFileHeader))
+        && file_header.signature != BMP_SIG) {
         return {};
     }
 
     BitmapInfoHeader info_header;
-    ifs.read((char*)&info_header, sizeof(BitmapInfoHeader));
+    if (!ifs.read((char*)&info_header, sizeof(BitmapInfoHeader))) {
+        return {};
+    };
 
     const int32_t w = info_header.image_width;
     const int32_t h = info_header.image_height;
